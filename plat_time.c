@@ -2,8 +2,13 @@
 
 #include "plat_assert.h"
 #include "plat_crash.h"
+#include "plat_os.h"
 
+#if PLAT_OS == PLAT_OS_WINDOWS
+#include <windows.h>
+#else
 #include <unistd.h>
+#endif
 
 #define PFX "Time"
 
@@ -14,18 +19,49 @@ void plat_time_sleep_ms(plat_time_ms_t ms) {
 }
 
 void plat_time_sleep_us(plat_time_us_t us) {
+#if PLAT_OS == PLAT_OS_WINDOWS
+    // Sleep() only has millisecond (or worse) resolution, use a high resolution waitable timer if available
+    HANDLE timer = CreateWaitableTimerExW(NULL, NULL, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+    if(!timer) timer = CreateWaitableTimerExW(NULL, NULL, 0, TIMER_ALL_ACCESS);
+    plat_assert(timer != NULL);
+    // Negative due time is relative, in 100ns units
+    LARGE_INTEGER due = {.QuadPart = -(LONGLONG)us * 10};
+    plat_assert(SetWaitableTimer(timer, &due, 0, NULL, NULL, FALSE));
+    plat_assert(WaitForSingleObject(timer, INFINITE) == WAIT_OBJECT_0);
+    plat_assert(CloseHandle(timer));
+#else
     usleep(us);
+#endif
 }
 
 plat_time_spec_t plat_time_get_real() {
     plat_time_spec_t ts;
+#if PLAT_OS == PLAT_OS_WINDOWS
+    // FILETIME is in 100ns units since 1601-01-01
+    FILETIME ft;
+    GetSystemTimePreciseAsFileTime(&ft);
+    uint64_t time = ((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+    time -= 116'444'736'000'000'000ULL; // 1601-01-01 to 1970-01-01
+    ts.tv_sec = (time_t)(time / 10'000'000);
+    ts.tv_nsec = (long)(time % 10'000'000) * 100;
+#else
     clock_gettime(CLOCK_REALTIME, &ts);
+#endif
     return ts;
 }
 
 plat_time_spec_t plat_time_get_mono() {
     plat_time_spec_t ts;
+#if PLAT_OS == PLAT_OS_WINDOWS
+    static LARGE_INTEGER freq = {};
+    if(freq.QuadPart == 0) plat_assert(QueryPerformanceFrequency(&freq));
+    LARGE_INTEGER counter;
+    plat_assert(QueryPerformanceCounter(&counter));
+    ts.tv_sec = (time_t)(counter.QuadPart / freq.QuadPart);
+    ts.tv_nsec = (long)((counter.QuadPart % freq.QuadPart) * 1'000'000'000 / freq.QuadPart);
+#else
     clock_gettime(CLOCK_MONOTONIC, &ts);
+#endif
     return ts;
 }
 
@@ -37,7 +73,11 @@ plat_time_ms_t plat_time_get_mono_ms() {
 
 plat_time_repr_t plat_time_get_repr(plat_time_spec_t ts) {
     struct tm tm;
+#if PLAT_OS == PLAT_OS_WINDOWS
+    plat_assert(localtime_s(&tm, &ts.tv_sec) == 0);
+#else
     localtime_r(&ts.tv_sec, &tm);
+#endif
     plat_time_repr_t tr = {
         .year = 1900 + tm.tm_year,
         .month = 1 + tm.tm_mon,

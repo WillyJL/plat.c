@@ -3,10 +3,15 @@
 #include "plat_assert.h"
 #include "plat_mlib.h"
 #include "plat_mutex.h"
+#include "plat_os.h"
 #include "plat_time.h"
 
 #include <inttypes.h>
 #include <stddef.h>
+
+#if PLAT_OS == PLAT_OS_WINDOWS
+#include <windows.h>
+#endif
 
 #define PFX "Log"
 
@@ -21,6 +26,13 @@
 #endif
 
 #define PLAT_LOG_COLOR_GREY "90"
+
+#if PLAT_OS == PLAT_OS_WINDOWS
+// stdout is in text mode, which already translates \n to \r\n
+#define PLAT_LOG_NEWLINE "\n"
+#else
+#define PLAT_LOG_NEWLINE "\r\n"
+#endif
 
 static plat_mutex_t* plat_log_mutex = NULL;
 
@@ -46,6 +58,14 @@ static void plat_log_tx(const void* str, size_t len) {
 }
 
 void plat_log_init() {
+#if defined(PLAT_LOG_COLOR) && PLAT_OS == PLAT_OS_WINDOWS
+    // Enable ANSI escape sequences on the Windows console, fails harmlessly if not a console
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode;
+    if(console != INVALID_HANDLE_VALUE && GetConsoleMode(console, &mode)) {
+        SetConsoleMode(console, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    }
+#endif
     plat_log_mutex = plat_mutex_alloc(PLAT_MUTEX_TYPE_NORMAL);
 }
 
@@ -72,7 +92,7 @@ void plat_log_vprintf(plat_log_level_t level, const char* pfx, const char* fmt, 
 
     m_string_cat_vprintf(str, fmt, args);
 
-    m_string_cat(str, PLAT_LOG_COLOR_FMT_RESET "\r\n");
+    m_string_cat(str, PLAT_LOG_COLOR_FMT_RESET PLAT_LOG_NEWLINE);
 
     bool has_mutex = plat_log_mutex != NULL;
     if(has_mutex) plat_mutex_acquire(plat_log_mutex, PLAT_TIMEOUT_FOREVER);

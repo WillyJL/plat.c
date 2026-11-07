@@ -1,7 +1,5 @@
 #pragma once
 
-#include "plat_assert.h"
-
 #include <stdint.h>
 
 typedef enum : uint64_t {

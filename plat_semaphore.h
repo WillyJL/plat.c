@@ -3,6 +3,7 @@
 #include "plat_types.h"
 
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef struct plat_semaphore_t plat_semaphore_t;
 

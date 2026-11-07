@@ -1,13 +1,12 @@
 #pragma once
 
 #include <stdint.h>
-#include <sys/param.h>
 
 #ifndef PLAT_APP_VERSION
 #define PLAT_APP_VERSION "unknown"
 #endif
 
-#if BYTE_ORDER == LITTLE_ENDIAN
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define PLAT_LE16_TO_H(x) (x)
 #define PLAT_LE32_TO_H(x) (x)
 #define PLAT_LE64_TO_H(x) (x)
@@ -20,7 +19,7 @@
 #define PLAT_H16_TO_BE(x) (__builtin_bswap16(x))
 #define PLAT_H32_TO_BE(x) (__builtin_bswap32(x))
 #define PLAT_H64_TO_BE(x) (__builtin_bswap64(x))
-#elif BYTE_ORDER == BIG_ENDIAN
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 #define PLAT_LE16_TO_H(x) (__builtin_bswap16(x))
 #define PLAT_LE32_TO_H(x) (__builtin_bswap32(x))
 #define PLAT_LE64_TO_H(x) (__builtin_bswap64(x))

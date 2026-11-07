@@ -1,9 +1,15 @@
 #include "plat_crash.h"
 
 #include "plat_log.h"
+#include "plat_os.h"
 
 #include <stdio.h>
+
+#if PLAT_OS == PLAT_OS_WINDOWS
+#include <stdlib.h>
+#elif PLAT_OS == PLAT_OS_LINUX || PLAT_OS == PLAT_OS_MACOS
 #include <unistd.h>
+#endif
 
 #define PFX "Crash"
 

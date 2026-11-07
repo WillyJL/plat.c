@@ -27,6 +27,14 @@ target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Wextra" "-Werror")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=unused-function" "-Wno-error=unused-label" "-Wno-error=unused-parameter" "-Wno-error=unused-variable" "-Wno-error=unused-but-set-variable")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=unused-result")
 
+# OS specific configuration
+if(WIN32)
+    # Target Windows 10 APIs, keep windows.h lean and without min/max macros
+    target_compile_definitions(${PROJECT_NAME} PRIVATE "_WIN32_WINNT=0x0A00" "WINVER=0x0A00" "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+    # BCryptGenRandom()
+    target_link_libraries(${PROJECT_NAME} PUBLIC bcrypt)
+endif()
+
 # Current build symlink
 add_custom_target(
     build-current

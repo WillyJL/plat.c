@@ -20,6 +20,7 @@
 // IWYU pragma: end_exports
 
 // IWYU pragma: begin_exports
+#include <errno.h>
 #include <float.h>
 #include <inttypes.h>
 #include <math.h>
@@ -29,7 +30,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/errno.h>
 #include <sys/stat.h>
 // IWYU pragma: end_exports
 
