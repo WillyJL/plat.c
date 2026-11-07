@@ -9,6 +9,7 @@
 #include "plat_marker.h"
 #include "plat_messagequeue.h"
 #include "plat_mutex.h"
+#include "plat_os.h"
 #include "plat_random.h"
 #include "plat_run.h"
 #include "plat_streambuffer.h"
