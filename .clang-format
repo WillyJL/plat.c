@@ -1,0 +1,33 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+AlignConsecutiveBitFields: Consecutive
+AlignTrailingComments: false
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortCompoundRequirementOnASingleLine: true
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+BinPackArguments: false
+BreakBeforeBraces: Attach
+ColumnLimit: 120
+IndentCaseLabels: false
+IndentWidth: 4
+InsertNewlineAtEOF: true
+PointerAlignment: Left
+SpaceBeforeParens: Never
+SpaceBeforeParensOptions:
+  AfterControlStatements: false
+  AfterForeachMacros: false
+  AfterFunctionDefinitionName: false
+  AfterFunctionDeclarationName: false
+  AfterIfMacros: false
+  AfterOverloadedOperator: false
+  AfterPlacementOperator: true
+  AfterRequiresInClause: false
+  AfterRequiresInExpression: false
+  BeforeNonEmptyParentheses: false
+UseTab: Never

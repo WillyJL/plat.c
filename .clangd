@@ -1,0 +1,4 @@
+CompileFlags:
+  CompilationDatabase: "./build/current"
+Completion:
+  HeaderInsertion: Never
