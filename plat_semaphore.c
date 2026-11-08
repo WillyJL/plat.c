@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 #include "plat_semaphore.h"
 
-#include "_plat_os_i.h"
+#include "_plat_os.h"
 #include "plat_assert.h"
 #include "plat_os.h"
 

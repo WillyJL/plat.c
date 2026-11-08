@@ -2,7 +2,7 @@
 #include "plat_thread.h"
 
 #if PLAT_OS != PLAT_OS_LINUX
-#include "_plat_os_i.h"
+#include "_plat_os.h"
 #endif
 #include "plat_assert.h"
 #include "plat_os.h"

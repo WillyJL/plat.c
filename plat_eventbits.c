@@ -86,7 +86,7 @@ plat_eventbits_bits_t plat_eventbits_wait(plat_eventbits_t* plat_eventbits, plat
 
 #elif PLAT_OS == PLAT_OS_LINUX || PLAT_OS == PLAT_OS_MACOS
 
-#include "_plat_os_i.h"
+#include "_plat_os.h"
 
 #include <pthread.h>
 

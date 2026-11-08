@@ -1,5 +1,5 @@
 #define _GNU_SOURCE
-#include "_plat_os_i.h"
+#include "_plat_os.h"
 
 #if PLAT_OS == PLAT_OS_WINDOWS
 
