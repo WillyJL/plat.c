@@ -7,6 +7,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if PLAT_OS == PLAT_OS_WINDOWS
 // Use the stack size from the executable header
 #define PLAT_THREAD_STACK_DEFAULT 0
@@ -29,3 +33,7 @@ plat_thread_t* plat_thread_start(const char* name, plat_thread_body_t body, void
 bool plat_thread_join(plat_thread_t* plat_thread, plat_thread_result_t* result, plat_timeout_t timeout);
 
 void plat_thread_yield();
+
+#ifdef __cplusplus
+}
+#endif

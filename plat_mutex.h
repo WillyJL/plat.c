@@ -4,6 +4,10 @@
 
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct plat_mutex_t plat_mutex_t;
 
 typedef enum : uint8_t {
@@ -16,3 +20,7 @@ void plat_mutex_free(plat_mutex_t* plat_mutex);
 
 bool plat_mutex_acquire(plat_mutex_t* plat_mutex, plat_timeout_t timeout);
 void plat_mutex_release(plat_mutex_t* plat_mutex);
+
+#ifdef __cplusplus
+}
+#endif

@@ -43,7 +43,7 @@ static inline size_t m_bstring_search_cstr(const m_bstring_t v, const void* buf,
     size_t size = m_bstring_size(v);
     if(len > size) return M_BSTRING_FAILURE;
     if(start + len > size) return M_BSTRING_FAILURE;
-    const uint8_t* p = m_bstring_get_cstr(v);
+    const uint8_t* p = (const uint8_t*)m_bstring_get_cstr(v);
     for(size_t pos = start; pos <= size - len; pos++) {
         if(memcmp(p + pos, buf, len) == 0) return pos;
     }

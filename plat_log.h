@@ -5,6 +5,10 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum : uint8_t {
     PLAT_LOG_LEVEL_NONE,
     PLAT_LOG_LEVEL_ERROR,
@@ -32,3 +36,7 @@ void plat_log_printf(plat_log_level_t level, const char* pfx, const char* fmt, .
 #define PLAT_LOG_I(pfx, fmt, ...) plat_log_printf(PLAT_LOG_LEVEL_INFO, pfx, fmt, ##__VA_ARGS__)
 #define PLAT_LOG_D(pfx, fmt, ...) plat_log_printf(PLAT_LOG_LEVEL_DEBUG, pfx, fmt, ##__VA_ARGS__)
 #define PLAT_LOG_T(pfx, fmt, ...) plat_log_printf(PLAT_LOG_LEVEL_TRACE, pfx, fmt, ##__VA_ARGS__)
+
+#ifdef __cplusplus
+}
+#endif

@@ -6,6 +6,10 @@
 #include <stdint.h>
 #include <time.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct timespec plat_time_spec_t;
 
 typedef struct {
@@ -36,3 +40,7 @@ bool plat_time_is_leap_year(uint16_t year);
 uint8_t plat_time_days_in_month(uint8_t month /* 1..12 */, uint16_t year /* Actual year */);
 
 void plat_time_format_iso(plat_time_spec_t ts, m_string_ptr str);
+
+#ifdef __cplusplus
+}
+#endif
