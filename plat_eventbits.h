@@ -20,8 +20,12 @@ void plat_eventbits_free(plat_eventbits_t* plat_eventbits);
 
 void plat_eventbits_set(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_t bits);
 void plat_eventbits_clear(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_t bits);
-plat_eventbits_bits_t plat_eventbits_wait(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_t bits, bool all,
-                                          bool clear, plat_timeout_t timeout);
+plat_eventbits_bits_t plat_eventbits_wait(
+    plat_eventbits_t* plat_eventbits,
+    plat_eventbits_bits_t bits,
+    bool all,
+    bool clear,
+    plat_timeout_t timeout);
 
 #ifdef __cplusplus
 }

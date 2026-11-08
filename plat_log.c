@@ -73,7 +73,8 @@ void plat_log_init() {
     // The console is shared with the parent shell and keeps this setting, so restore it on exit.
     // Both fail harmlessly if there is no console, output redirected to a file or pipe is raw bytes anyway.
     plat_log_console_cp_prev = GetConsoleOutputCP();
-    if(plat_log_console_cp_prev != 0 && plat_log_console_cp_prev != CP_UTF8 && SetConsoleOutputCP(CP_UTF8)) {
+    if(plat_log_console_cp_prev != 0 && plat_log_console_cp_prev != CP_UTF8 &&
+       SetConsoleOutputCP(CP_UTF8)) {
         atexit(plat_log_console_cp_restore);
     }
 #ifdef PLAT_LOG_COLOR
@@ -99,15 +100,17 @@ void plat_log_vprintf(plat_log_level_t level, const char* pfx, const char* fmt, 
 #endif
     const char letter = plat_log_level_letters[level];
 
-    m_string_init_printf(str,
-                         PLAT_LOG_COLOR_FMT(PLAT_LOG_COLOR_GREY) "%10" PRIu64 " " PLAT_LOG_COLOR_FMT(
-                             "%s") "[%c][%s] " PLAT_LOG_COLOR_FMT_RESET,
-                         plat_time_get_mono_ms(),
+    m_string_init_printf(
+        str,
+        PLAT_LOG_COLOR_FMT(PLAT_LOG_COLOR_GREY) "%10" PRIu64 " " // Timestamp
+        PLAT_LOG_COLOR_FMT("%s") "[%c][%s] " // Level and prefix
+        PLAT_LOG_COLOR_FMT_RESET,
+        plat_time_get_mono_ms(),
 #ifdef PLAT_LOG_COLOR
-                         color,
+        color,
 #endif
-                         letter,
-                         pfx);
+        letter,
+        pfx);
 
     m_string_cat_vprintf(str, fmt, args);
 

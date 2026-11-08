@@ -38,6 +38,9 @@ wchar_t* plat_os_windows_utf8_to_wide(const char* str);
 int plat_os_pthread_mutex_clocklock(pthread_mutex_t* p_mutex, const plat_time_spec_t* deadline);
 
 // Wait on a pthread condition with an absolute CLOCK_MONOTONIC deadline.
-int plat_os_pthread_cond_clockwait(pthread_cond_t* p_cond, pthread_mutex_t* p_mutex, const plat_time_spec_t* deadline);
+int plat_os_pthread_cond_clockwait(
+    pthread_cond_t* p_cond,
+    pthread_mutex_t* p_mutex,
+    const plat_time_spec_t* deadline);
 
 #endif

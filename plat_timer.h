@@ -15,8 +15,11 @@ typedef enum : uint8_t {
 
 typedef void (*plat_timer_handler_t)(plat_timer_t* plat_timer, void* ctx);
 
-plat_timer_t* plat_timer_start(plat_timer_type_t type, plat_time_ms_t duration, plat_timer_handler_t handler,
-                               void* ctx);
+plat_timer_t* plat_timer_start(
+    plat_timer_type_t type,
+    plat_time_ms_t duration,
+    plat_timer_handler_t handler,
+    void* ctx);
 void plat_timer_stop(plat_timer_t* plat_timer);
 
 #ifdef __cplusplus

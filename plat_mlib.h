@@ -4,11 +4,11 @@
 #include "plat_defs.h"
 
 #ifndef NDEBUG
-#define M_ASSERT(expr)                                                                                                 \
-    do {                                                                                                               \
-        if(!(expr)) {                                                                                                  \
-            plat_crash("M_ASSERT(%s)", #expr);                                                                         \
-        }                                                                                                              \
+#define M_ASSERT(expr)                         \
+    do {                                       \
+        if(!(expr)) {                          \
+            plat_crash("M_ASSERT(%s)", #expr); \
+        }                                      \
     } while(0)
 #endif
 
@@ -43,7 +43,11 @@ static inline void m_bstring_right(m_bstring_t v, size_t index) {
         index -= pop;
     }
 }
-static inline size_t m_bstring_search_cstr(const m_bstring_t v, const void* buf, size_t len, size_t start) {
+static inline size_t m_bstring_search_cstr(
+    const m_bstring_t v,
+    const void* buf,
+    size_t len,
+    size_t start) {
     size_t size = m_bstring_size(v);
     if(len > size) return M_BSTRING_FAILURE;
     if(start + len > size) return M_BSTRING_FAILURE;
@@ -58,7 +62,8 @@ static inline size_t m_bstring_search(const m_bstring_t v1, const m_bstring_t v2
 }
 
 // Based on M_EACH() but container and container_t are swapped to resemble variable declaration.
-#define each(item_t, item, container_t, container) eachi_oplist(item_t, item, container, M_GLOBAL_OPLIST(container_t))
+#define each(item_t, item, container_t, container) \
+    eachi_oplist(item_t, item, container, M_GLOBAL_OPLIST(container_t))
 
 // clang-format off
 /* Internal for each */

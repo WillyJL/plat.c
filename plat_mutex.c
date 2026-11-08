@@ -167,7 +167,8 @@ bool plat_mutex_acquire(plat_mutex_t* plat_mutex, plat_timeout_t timeout) {
     }
 
     plat_assert(pthread_mutex_lock(&plat_mutex->p_mutex) == 0);
-    if(plat_mutex->type == PLAT_MUTEX_TYPE_RECURSIVE && plat_mutex->locked && pthread_equal(plat_mutex->owner, self)) {
+    if(plat_mutex->type == PLAT_MUTEX_TYPE_RECURSIVE && plat_mutex->locked &&
+       pthread_equal(plat_mutex->owner, self)) {
         plat_mutex->count++;
         plat_assert(pthread_mutex_unlock(&plat_mutex->p_mutex) == 0);
         return true;
@@ -177,7 +178,10 @@ bool plat_mutex_acquire(plat_mutex_t* plat_mutex, plat_timeout_t timeout) {
         if(timeout == PLAT_TIMEOUT_FOREVER) {
             plat_assert(pthread_cond_wait(&plat_mutex->p_cond, &plat_mutex->p_mutex) == 0);
         } else {
-            int wait = plat_os_pthread_cond_clockwait(&plat_mutex->p_cond, &plat_mutex->p_mutex, &ts);
+            int wait = plat_os_pthread_cond_clockwait(
+                &plat_mutex->p_cond,
+                &plat_mutex->p_mutex,
+                &ts);
             plat_assert(wait == 0 || wait == ETIMEDOUT);
             if(wait == ETIMEDOUT) break;
         }

@@ -21,7 +21,11 @@ void plat_time_sleep_ms(plat_time_ms_t ms) {
 void plat_time_sleep_us(plat_time_us_t us) {
 #if PLAT_OS == PLAT_OS_WINDOWS
     // Sleep() only has millisecond (or worse) resolution, use a high resolution waitable timer if available
-    HANDLE timer = CreateWaitableTimerExW(NULL, NULL, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+    HANDLE timer = CreateWaitableTimerExW(
+        NULL,
+        NULL,
+        CREATE_WAITABLE_TIMER_HIGH_RESOLUTION,
+        TIMER_ALL_ACCESS);
     if(!timer) timer = CreateWaitableTimerExW(NULL, NULL, 0, TIMER_ALL_ACCESS);
     plat_assert(timer != NULL);
     // Negative due time is relative, in 100ns units
@@ -132,13 +136,14 @@ uint8_t plat_time_days_in_month(uint8_t month /* 1..12 */, uint16_t year /* Actu
 
 void plat_time_format_iso(plat_time_spec_t ts, m_string_ptr str) {
     plat_time_repr_t tr = plat_time_get_repr(ts);
-    m_string_printf(str,
-                    "%04d-%02d-%02dT%02d:%02d:%02d.%06d",
-                    tr.year,
-                    tr.month,
-                    tr.day,
-                    tr.hour,
-                    tr.minute,
-                    tr.second,
-                    ts.tv_nsec / 1000);
+    m_string_printf(
+        str,
+        "%04d-%02d-%02dT%02d:%02d:%02d.%06d",
+        tr.year,
+        tr.month,
+        tr.day,
+        tr.hour,
+        tr.minute,
+        tr.second,
+        ts.tv_nsec / 1000);
 }

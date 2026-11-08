@@ -36,8 +36,11 @@ void plat_streambuffer_free(plat_streambuffer_t* plat_streambuffer) {
     free(plat_streambuffer);
 }
 
-size_t plat_streambuffer_send(plat_streambuffer_t* plat_streambuffer, const void* data, size_t size,
-                              plat_timeout_t timeout) {
+size_t plat_streambuffer_send(
+    plat_streambuffer_t* plat_streambuffer,
+    const void* data,
+    size_t size,
+    plat_timeout_t timeout) {
     plat_assert(plat_streambuffer);
     plat_assert(data);
     plat_assert(size);
@@ -47,9 +50,16 @@ size_t plat_streambuffer_send(plat_streambuffer_t* plat_streambuffer, const void
         while(send < size) {
             if(m_streambuffer_full_p(plat_streambuffer->m_streambuffer)) {
                 plat_eventbits_wait(
-                    plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_RECV, true, true, PLAT_TIMEOUT_FOREVER);
+                    plat_streambuffer->eventbits,
+                    PLAT_STREAMBUFFER_EVENT_RECV,
+                    true,
+                    true,
+                    PLAT_TIMEOUT_FOREVER);
             }
-            send += m_streambuffer_push_bulk(plat_streambuffer->m_streambuffer, size - send, data + send);
+            send += m_streambuffer_push_bulk(
+                plat_streambuffer->m_streambuffer,
+                size - send,
+                data + send);
             if(send) {
                 plat_eventbits_set(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_SEND);
             }
@@ -68,9 +78,17 @@ size_t plat_streambuffer_send(plat_streambuffer_t* plat_streambuffer, const void
         size_t send = 0;
         while(now < exp && send < size) {
             if(m_streambuffer_full_p(plat_streambuffer->m_streambuffer)) {
-                plat_eventbits_wait(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_RECV, true, true, exp - now);
+                plat_eventbits_wait(
+                    plat_streambuffer->eventbits,
+                    PLAT_STREAMBUFFER_EVENT_RECV,
+                    true,
+                    true,
+                    exp - now);
             }
-            send += m_streambuffer_push_bulk(plat_streambuffer->m_streambuffer, size - send, data + send);
+            send += m_streambuffer_push_bulk(
+                plat_streambuffer->m_streambuffer,
+                size - send,
+                data + send);
             if(send) {
                 plat_eventbits_set(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_SEND);
             }
@@ -80,8 +98,12 @@ size_t plat_streambuffer_send(plat_streambuffer_t* plat_streambuffer, const void
     }
 }
 
-size_t plat_streambuffer_recv(plat_streambuffer_t* plat_streambuffer, void* data, size_t size, size_t want,
-                              plat_timeout_t timeout) {
+size_t plat_streambuffer_recv(
+    plat_streambuffer_t* plat_streambuffer,
+    void* data,
+    size_t size,
+    size_t want,
+    plat_timeout_t timeout) {
     plat_assert(plat_streambuffer);
     plat_assert(data);
     plat_assert(size);
@@ -93,9 +115,16 @@ size_t plat_streambuffer_recv(plat_streambuffer_t* plat_streambuffer, void* data
         while(true) {
             if(m_streambuffer_empty_p(plat_streambuffer->m_streambuffer)) {
                 plat_eventbits_wait(
-                    plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_SEND, true, true, PLAT_TIMEOUT_FOREVER);
+                    plat_streambuffer->eventbits,
+                    PLAT_STREAMBUFFER_EVENT_SEND,
+                    true,
+                    true,
+                    PLAT_TIMEOUT_FOREVER);
             }
-            recv += m_streambuffer_pop_bulk(MIN(size - recv, capacity), data + recv, plat_streambuffer->m_streambuffer);
+            recv += m_streambuffer_pop_bulk(
+                MIN(size - recv, capacity),
+                data + recv,
+                plat_streambuffer->m_streambuffer);
             if(recv) {
                 plat_eventbits_set(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_RECV);
             }
@@ -104,7 +133,10 @@ size_t plat_streambuffer_recv(plat_streambuffer_t* plat_streambuffer, void* data
             }
         }
     } else if(timeout == PLAT_TIMEOUT_NONE) {
-        size_t recv = m_streambuffer_pop_bulk(MIN(size, capacity), data, plat_streambuffer->m_streambuffer);
+        size_t recv = m_streambuffer_pop_bulk(
+            MIN(size, capacity),
+            data,
+            plat_streambuffer->m_streambuffer);
         if(recv) {
             plat_eventbits_set(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_RECV);
         }
@@ -115,9 +147,17 @@ size_t plat_streambuffer_recv(plat_streambuffer_t* plat_streambuffer, void* data
         size_t recv = 0;
         while(recv < want && now < exp) {
             if(m_streambuffer_empty_p(plat_streambuffer->m_streambuffer)) {
-                plat_eventbits_wait(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_SEND, true, true, exp - now);
+                plat_eventbits_wait(
+                    plat_streambuffer->eventbits,
+                    PLAT_STREAMBUFFER_EVENT_SEND,
+                    true,
+                    true,
+                    exp - now);
             }
-            recv += m_streambuffer_pop_bulk(MIN(size - recv, capacity), data + recv, plat_streambuffer->m_streambuffer);
+            recv += m_streambuffer_pop_bulk(
+                MIN(size - recv, capacity),
+                data + recv,
+                plat_streambuffer->m_streambuffer);
             if(recv) {
                 plat_eventbits_set(plat_streambuffer->eventbits, PLAT_STREAMBUFFER_EVENT_RECV);
             }
@@ -136,8 +176,8 @@ size_t plat_streambuffer_size(plat_streambuffer_t* plat_streambuffer) {
 size_t plat_streambuffer_avail_send(plat_streambuffer_t* plat_streambuffer) {
     plat_assert(plat_streambuffer);
 
-    return (m_streambuffer_capacity(plat_streambuffer->m_streambuffer) -
-            m_streambuffer_size(plat_streambuffer->m_streambuffer));
+    return m_streambuffer_capacity(plat_streambuffer->m_streambuffer) -
+           m_streambuffer_size(plat_streambuffer->m_streambuffer);
 }
 
 size_t plat_streambuffer_avail_recv(plat_streambuffer_t* plat_streambuffer) {
@@ -151,6 +191,11 @@ void plat_streambuffer_drain(plat_streambuffer_t* plat_streambuffer) {
 
     while(plat_streambuffer_avail_recv(plat_streambuffer)) {
         uint8_t drain[128];
-        plat_streambuffer_recv(plat_streambuffer, drain, sizeof(drain), sizeof(drain), PLAT_TIMEOUT_NONE);
+        plat_streambuffer_recv(
+            plat_streambuffer,
+            drain,
+            sizeof(drain),
+            sizeof(drain),
+            PLAT_TIMEOUT_NONE);
     }
 }

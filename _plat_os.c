@@ -78,13 +78,17 @@ int plat_os_pthread_mutex_clocklock(pthread_mutex_t* p_mutex, const plat_time_sp
 #endif
 }
 
-int plat_os_pthread_cond_clockwait(pthread_cond_t* p_cond, pthread_mutex_t* p_mutex, const plat_time_spec_t* deadline) {
+int plat_os_pthread_cond_clockwait(
+    pthread_cond_t* p_cond,
+    pthread_mutex_t* p_mutex,
+    const plat_time_spec_t* deadline) {
 #if PLAT_OS == PLAT_OS_LINUX
     return pthread_cond_clockwait(p_cond, p_mutex, CLOCK_MONOTONIC, deadline);
 #elif PLAT_OS == PLAT_OS_MACOS
     // macOS has no clock selection for conditions, but supports relative timeouts
     plat_time_spec_t now = plat_time_get_mono();
-    if(now.tv_sec > deadline->tv_sec || (now.tv_sec == deadline->tv_sec && now.tv_nsec >= deadline->tv_nsec)) {
+    if(now.tv_sec > deadline->tv_sec ||
+       (now.tv_sec == deadline->tv_sec && now.tv_nsec >= deadline->tv_nsec)) {
         return ETIMEDOUT;
     }
     struct timespec rel = {

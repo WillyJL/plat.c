@@ -105,7 +105,10 @@ bool plat_semaphore_take(plat_semaphore_t* plat_semaphore, plat_timeout_t timeou
         plat_assert(lock == 0 || lock == ETIMEDOUT);
         if(lock == ETIMEDOUT) return false;
         while(plat_semaphore->count == 0) {
-            int wait = plat_os_pthread_cond_clockwait(&plat_semaphore->p_cond, &plat_semaphore->p_mutex, &ts);
+            int wait = plat_os_pthread_cond_clockwait(
+                &plat_semaphore->p_cond,
+                &plat_semaphore->p_mutex,
+                &ts);
             plat_assert(wait == 0 || wait == ETIMEDOUT);
             if(wait == ETIMEDOUT) break;
         }

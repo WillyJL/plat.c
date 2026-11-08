@@ -18,10 +18,14 @@
 
 #define PFX "Path"
 
-#define PLAT_PATH_LOG_ERRNO(plat_path)                                                                                 \
-    do {                                                                                                               \
-        char _err_buf[PLAT_OS_STRERROR_BUF_LEN];                                                                       \
-        PLAT_LOG_E(PFX, "%s: %s", plat_path_cstr(plat_path), plat_os_strerror(errno, _err_buf, sizeof(_err_buf)));     \
+#define PLAT_PATH_LOG_ERRNO(plat_path)                            \
+    do {                                                          \
+        char _err_buf[PLAT_OS_STRERROR_BUF_LEN];                  \
+        PLAT_LOG_E(                                               \
+            PFX,                                                  \
+            "%s: %s",                                             \
+            plat_path_cstr(plat_path),                            \
+            plat_os_strerror(errno, _err_buf, sizeof(_err_buf))); \
     } while(0)
 
 #if PLAT_OS == PLAT_OS_WINDOWS
@@ -135,27 +139,33 @@ void plat_path_set(plat_path_t* plat_path, const char* set) {
 
 void plat_path_set_name(plat_path_t* plat_path, const char* name) {
     char path_buf[PLAT_PATH_BUF_LEN];
-    plat_assert(cwk_path_change_basename(plat_path_cstr(plat_path), name, path_buf, sizeof(path_buf)) <
-                sizeof(path_buf));
+    plat_assert(
+        cwk_path_change_basename(plat_path_cstr(plat_path), name, path_buf, sizeof(path_buf)) <
+        sizeof(path_buf));
     m_string_set(plat_path->str, path_buf);
 }
 
 void plat_path_set_extension(plat_path_t* plat_path, const char* extension) {
     char path_buf[PLAT_PATH_BUF_LEN];
-    plat_assert(cwk_path_change_extension(plat_path_cstr(plat_path), extension, path_buf, sizeof(path_buf)) <
-                sizeof(path_buf));
+    plat_assert(
+        cwk_path_change_extension(plat_path_cstr(plat_path), extension, path_buf, sizeof(path_buf)) <
+        sizeof(path_buf));
     m_string_set(plat_path->str, path_buf);
 }
 
 void plat_path_join(plat_path_t* plat_path, const char* join) {
     char path_buf[PLAT_PATH_BUF_LEN];
-    plat_assert(cwk_path_join(plat_path_cstr(plat_path), join, path_buf, sizeof(path_buf)) < sizeof(path_buf));
+    plat_assert(
+        cwk_path_join(plat_path_cstr(plat_path), join, path_buf, sizeof(path_buf)) <
+        sizeof(path_buf));
     m_string_set(plat_path->str, path_buf);
 }
 
 void plat_path_normalize(plat_path_t* plat_path) {
     char path_buf[PLAT_PATH_BUF_LEN];
-    plat_assert(cwk_path_normalize(plat_path_cstr(plat_path), path_buf, sizeof(path_buf)) < sizeof(path_buf));
+    plat_assert(
+        cwk_path_normalize(plat_path_cstr(plat_path), path_buf, sizeof(path_buf)) <
+        sizeof(path_buf));
     m_string_set(plat_path->str, path_buf);
 }
 
@@ -278,7 +288,10 @@ bool plat_path_read_text(plat_path_t* plat_path, m_string_ptr text) {
 }
 
 bool plat_path_write_bytes(plat_path_t* plat_path, m_bstring_ptr bytes) {
-    return plat_path_write_raw(plat_path, m_bstring_view(bytes, 0, m_bstring_size(bytes)), m_bstring_size(bytes));
+    return plat_path_write_raw(
+        plat_path,
+        m_bstring_view(bytes, 0, m_bstring_size(bytes)),
+        m_bstring_size(bytes));
 }
 
 bool plat_path_write_raw(plat_path_t* plat_path, const void* data, size_t size) {

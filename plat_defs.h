@@ -36,47 +36,48 @@
 #error huh
 #endif
 
-#define PLAT_PACKED __attribute__((packed))
+#define PLAT_PACKED      __attribute__((packed))
 #define PLAT_PRINTF(fmt) __attribute__((format(printf, fmt, fmt + 1)));
-#define PLAT_NO_RETURN __attribute__((__noreturn__))
+#define PLAT_NO_RETURN   __attribute__((__noreturn__))
 
 typedef __attribute__((aligned(1))) uint64_t _pad_t;
 
 #undef MAX
-#define MAX(a, b)                                                                                                      \
-    ({                                                                                                                 \
-        __typeof__(a) _a = (a);                                                                                        \
-        __typeof__(b) _b = (b);                                                                                        \
-        _a > _b ? _a : _b;                                                                                             \
+#define MAX(a, b)               \
+    ({                          \
+        __typeof__(a) _a = (a); \
+        __typeof__(b) _b = (b); \
+        _a > _b ? _a : _b;      \
     })
 
 #undef MIN
-#define MIN(a, b)                                                                                                      \
-    ({                                                                                                                 \
-        __typeof__(a) _a = (a);                                                                                        \
-        __typeof__(b) _b = (b);                                                                                        \
-        _a < _b ? _a : _b;                                                                                             \
+#define MIN(a, b)               \
+    ({                          \
+        __typeof__(a) _a = (a); \
+        __typeof__(b) _b = (b); \
+        _a < _b ? _a : _b;      \
     })
 
 #define ABS(a) ({ (a) < 0 ? -(a) : (a); })
 
 #define CLAMP(x, lower, upper) (MAX(lower, MIN(x, upper)))
 
-#define MAP(x, in_min, in_max, out_min, out_max) ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+#define MAP(x, in_min, in_max, out_min, out_max) \
+    ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 #define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
 
 #undef UNUSED
 #define UNUSED(X) (void)(X)
 
-#define STR(x) #x
+#define STR(x)  #x
 #define XSTR(x) STR(x)
 
-#define SWAP_ITEMS(a, b)                                                                                               \
-    ({                                                                                                                 \
-        __typeof__(a) _tmp = (a);                                                                                      \
-        a = b;                                                                                                         \
-        b = _tmp;                                                                                                      \
+#define SWAP_ITEMS(a, b)          \
+    ({                            \
+        __typeof__(a) _tmp = (a); \
+        a = b;                    \
+        b = _tmp;                 \
     })
 
 #define POWER_OF_2(n) (!((n) & ((n) - 1)))

@@ -52,8 +52,12 @@ void plat_eventbits_clear(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_
     ReleaseSRWLockExclusive(&plat_eventbits->lock);
 }
 
-plat_eventbits_bits_t plat_eventbits_wait(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_t bits, bool all,
-                                          bool clear, plat_timeout_t timeout) {
+plat_eventbits_bits_t plat_eventbits_wait(
+    plat_eventbits_t* plat_eventbits,
+    plat_eventbits_bits_t bits,
+    bool all,
+    bool clear,
+    plat_timeout_t timeout) {
     plat_assert(plat_eventbits);
     plat_assert(bits);
 
@@ -131,8 +135,12 @@ void plat_eventbits_clear(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_
     plat_assert(pthread_mutex_unlock(&plat_eventbits->p_mutex) == 0);
 }
 
-plat_eventbits_bits_t plat_eventbits_wait(plat_eventbits_t* plat_eventbits, plat_eventbits_bits_t bits, bool all,
-                                          bool clear, plat_timeout_t timeout) {
+plat_eventbits_bits_t plat_eventbits_wait(
+    plat_eventbits_t* plat_eventbits,
+    plat_eventbits_bits_t bits,
+    bool all,
+    bool clear,
+    plat_timeout_t timeout) {
     plat_assert(plat_eventbits);
     plat_assert(bits);
 
@@ -142,7 +150,8 @@ plat_eventbits_bits_t plat_eventbits_wait(plat_eventbits_t* plat_eventbits, plat
         while(true) {
             plat_assert(pthread_mutex_lock(&plat_eventbits->p_mutex) == 0);
             if(!first) {
-                plat_assert(pthread_cond_wait(&plat_eventbits->p_cond, &plat_eventbits->p_mutex) == 0);
+                plat_assert(
+                    pthread_cond_wait(&plat_eventbits->p_cond, &plat_eventbits->p_mutex) == 0);
             }
             first = false;
             recv |= (plat_eventbits->bits & bits);
@@ -164,7 +173,10 @@ plat_eventbits_bits_t plat_eventbits_wait(plat_eventbits_t* plat_eventbits, plat
             if(lock == ETIMEDOUT) return recv;
             int wait = 0;
             if(!first) {
-                wait = plat_os_pthread_cond_clockwait(&plat_eventbits->p_cond, &plat_eventbits->p_mutex, &ts);
+                wait = plat_os_pthread_cond_clockwait(
+                    &plat_eventbits->p_cond,
+                    &plat_eventbits->p_mutex,
+                    &ts);
                 plat_assert(wait == 0 || wait == ETIMEDOUT);
             }
             first = false;

@@ -13,7 +13,12 @@
 
 #define PFX "Crash"
 
-PLAT_NO_RETURN void plat_crash_detail(const char* file, int line, const char* func, const char* fmt, ...) {
+PLAT_NO_RETURN void plat_crash_detail(
+    const char* file,
+    int line,
+    const char* func,
+    const char* fmt,
+    ...) {
     char text[128];
     va_list args;
     va_start(args, fmt);

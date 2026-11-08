@@ -103,8 +103,11 @@ void plat_timer_init() {
     plat_thread_start("plat-timer", plat_timer_task, NULL, PLAT_THREAD_STACK_DEFAULT);
 }
 
-plat_timer_t* plat_timer_start(plat_timer_type_t type, plat_time_ms_t duration, plat_timer_handler_t handler,
-                               void* ctx) {
+plat_timer_t* plat_timer_start(
+    plat_timer_type_t type,
+    plat_time_ms_t duration,
+    plat_timer_handler_t handler,
+    void* ctx) {
     plat_assert(handler);
 
     plat_mutex_acquire(plat_timer_mutex, PLAT_TIMEOUT_FOREVER);
@@ -225,8 +228,11 @@ void plat_timer_init() {
     plat_thread_start("plat-timer", plat_timer_task, NULL, PLAT_THREAD_STACK_DEFAULT);
 }
 
-plat_timer_t* plat_timer_start(plat_timer_type_t type, plat_time_ms_t duration, plat_timer_handler_t handler,
-                               void* ctx) {
+plat_timer_t* plat_timer_start(
+    plat_timer_type_t type,
+    plat_time_ms_t duration,
+    plat_timer_handler_t handler,
+    void* ctx) {
     plat_assert(handler);
 
     plat_mutex_acquire(plat_timer_mutex, PLAT_TIMEOUT_FOREVER);

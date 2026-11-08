@@ -16,7 +16,7 @@ add_compile_options(
 )
 
 # Main library
-file(GLOB sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.c")
+file(GLOB sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(${PROJECT_NAME} "${sources}")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Wextra" "-Werror")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=unused-function" "-Wno-error=unused-label" "-Wno-error=unused-parameter" "-Wno-error=unused-variable" "-Wno-error=unused-but-set-variable")

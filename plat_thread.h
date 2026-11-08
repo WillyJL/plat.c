@@ -29,8 +29,15 @@ typedef uint64_t plat_thread_result_t;
 
 typedef plat_thread_result_t (*plat_thread_body_t)(void* ctx);
 
-plat_thread_t* plat_thread_start(const char* name, plat_thread_body_t body, void* ctx, size_t stack);
-bool plat_thread_join(plat_thread_t* plat_thread, plat_thread_result_t* result, plat_timeout_t timeout);
+plat_thread_t* plat_thread_start(
+    const char* name,
+    plat_thread_body_t body,
+    void* ctx,
+    size_t stack);
+bool plat_thread_join(
+    plat_thread_t* plat_thread,
+    plat_thread_result_t* result,
+    plat_timeout_t timeout);
 
 void plat_thread_yield();
 
