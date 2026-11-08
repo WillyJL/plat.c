@@ -9,6 +9,7 @@
 
 #include <inttypes.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 #if PLAT_OS == PLAT_OS_WINDOWS
 #include <windows.h>
@@ -58,14 +59,31 @@ static void plat_log_tx(const void* str, size_t len) {
     fwrite(str, 1, len, stdout);
 }
 
+#if PLAT_OS == PLAT_OS_WINDOWS
+static UINT plat_log_console_cp_prev = 0;
+
+static void plat_log_console_cp_restore(void) {
+    SetConsoleOutputCP(plat_log_console_cp_prev);
+}
+#endif
+
 void plat_log_init() {
-#if defined(PLAT_LOG_COLOR) && PLAT_OS == PLAT_OS_WINDOWS
+#if PLAT_OS == PLAT_OS_WINDOWS
+    // Log strings are UTF-8, make the console interpret output as such instead of the OEM codepage.
+    // The console is shared with the parent shell and keeps this setting, so restore it on exit.
+    // Both fail harmlessly if there is no console, output redirected to a file or pipe is raw bytes anyway.
+    plat_log_console_cp_prev = GetConsoleOutputCP();
+    if(plat_log_console_cp_prev != 0 && plat_log_console_cp_prev != CP_UTF8 && SetConsoleOutputCP(CP_UTF8)) {
+        atexit(plat_log_console_cp_restore);
+    }
+#ifdef PLAT_LOG_COLOR
     // Enable ANSI escape sequences on the Windows console, fails harmlessly if not a console
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD mode;
     if(console != INVALID_HANDLE_VALUE && GetConsoleMode(console, &mode)) {
         SetConsoleMode(console, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
     }
+#endif
 #endif
     plat_log_mutex = plat_mutex_alloc(PLAT_MUTEX_TYPE_NORMAL);
 }
