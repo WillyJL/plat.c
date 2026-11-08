@@ -6,11 +6,6 @@ project(plat C)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
-include_directories(
-    # Source code
-    "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/lib"
-)
 add_compile_options(
     # Show colors through Ninja pipes
     "-fdiagnostics-color=always"
@@ -26,6 +21,12 @@ add_library(${PROJECT_NAME} "${sources}")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wall" "-Wextra" "-Werror")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=unused-function" "-Wno-error=unused-label" "-Wno-error=unused-parameter" "-Wno-error=unused-variable" "-Wno-error=unused-but-set-variable")
 target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=unused-result")
+target_include_directories(
+    ${PROJECT_NAME} PUBLIC
+    # Source code
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/lib"
+)
 
 # OS specific configuration
 if(WIN32)
@@ -46,6 +47,12 @@ if(PROJECT_IS_TOP_LEVEL)
     )
     add_dependencies(${PROJECT_NAME} build-current)
 endif()
+
+# M*LIB
+target_compile_options(
+    ${PROJECT_NAME} PUBLIC
+    "-DM_USE_SMALL_NAME=0"  # Disable legacy type/function names
+)
 
 # Format sources
 add_custom_target(
