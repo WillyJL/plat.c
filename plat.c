@@ -1,4 +1,5 @@
 #include "plat.h"
+#include "_plat.h"
 
 void plat_init() {
     plat_log_init();

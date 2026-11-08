@@ -1,5 +1,6 @@
 #include "plat_random.h"
 
+#include "_plat.h"
 #include "plat_assert.h"
 #include "plat_os.h"
 

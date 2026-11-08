@@ -1,5 +1,6 @@
 #include "plat_log.h"
 
+#include "_plat.h"
 #include "plat_assert.h"
 #include "plat_mlib.h"
 #include "plat_mutex.h"

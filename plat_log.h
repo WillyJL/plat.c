@@ -19,8 +19,6 @@ typedef enum : uint8_t {
     _PLAT_LOG_LEVEL_MAX,
 } plat_log_level_t;
 
-void plat_log_init();
-
 void plat_log_vprintf(plat_log_level_t level, const char* pfx, const char* fmt, va_list args);
 
 #define PLAT_LOGV_E(pfx, fmt, args) plat_log_vprintf(PLAT_LOG_LEVEL_ERROR, pfx, fmt, args)
