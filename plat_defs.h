@@ -81,4 +81,4 @@ typedef __attribute__((aligned(1))) uint64_t _pad_t;
 
 #define POWER_OF_2(n) (!((n) & ((n) - 1)))
 
-#define __FUNC__ __PRETTY_FUNCTION__
+#define __FUNC__ __FUNCTION__
