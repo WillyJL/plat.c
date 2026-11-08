@@ -35,12 +35,14 @@ if(WIN32)
     target_link_libraries(${PROJECT_NAME} PUBLIC bcrypt)
 endif()
 
-# Current build symlink
-add_custom_target(
-    build-current
-    COMMAND "${CMAKE_COMMAND}" -E create_symlink "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/build/current"
-)
-add_dependencies(${PROJECT_NAME} build-current)
+if(PROJECT_IS_TOP_LEVEL)
+    # Current build symlink
+    add_custom_target(
+        build-current
+        COMMAND "${CMAKE_COMMAND}" -E create_symlink "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/build/current"
+    )
+    add_dependencies(${PROJECT_NAME} build-current)
+endif()
 
 # Format sources
 add_custom_target(
