@@ -35,6 +35,9 @@ if(WIN32)
     target_link_libraries(${PROJECT_NAME} PUBLIC bcrypt)
 endif()
 
+# Clangd
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/.clangd.in ${CMAKE_CURRENT_SOURCE_DIR}/.clangd @ONLY)
+
 if(PROJECT_IS_TOP_LEVEL)
     # Current build symlink
     add_custom_target(

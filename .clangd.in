@@ -1,5 +1,5 @@
 CompileFlags:
-  CompilationDatabase: "./build/current"
+  CompilationDatabase: "@CMAKE_BINARY_DIR@"
   Remove: [-Wfatal-errors]
 Completion:
   HeaderInsertion: Never
