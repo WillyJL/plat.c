@@ -20,6 +20,10 @@
 #include <mlib/m-string.h>
 // IWYU pragma: end_exports
 
+// String list
+M_LIST_DUALF_DEF(m_string_list, m_string_t)
+#define M_OPL_m_string_list_t() M_LIST_OPLIST(m_string_list, M_OPL_m_string_t())
+
 // Byte string polyfills
 typedef struct m_bstring_s* m_bstring_ptr;
 #define M_BSTRING_FAILURE M_STRING_FAILURE
