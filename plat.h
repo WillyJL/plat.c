@@ -7,7 +7,6 @@
 #include "plat_eventbits.h"
 #include "plat_log.h"
 #include "plat_marker.h"
-#include "plat_messagequeue.h"
 #include "plat_mutex.h"
 #include "plat_os.h"
 #include "plat_path.h"
