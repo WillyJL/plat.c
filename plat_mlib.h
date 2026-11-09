@@ -131,14 +131,14 @@ static inline size_t m_bstring_search(const m_bstring_t v1, const m_bstring_t v2
         OOR_SET(API_4(M_INT_OOR_SET(int_t))),     \
         HASH(M_INT_HASH))
 
-#define M_OPL_int8_t()   M_INT_OPLIST(int8_t)
-#define M_OPL_int16_t()  M_INT_OPLIST(int16_t)
-#define M_OPL_int32_t()  M_INT_OPLIST(int32_t)
-#define M_OPL_int64_t()  M_INT_OPLIST(int64_t)
-#define M_OPL_uint8_t()  M_INT_OPLIST(uint8_t)
-#define M_OPL_uint16_t() M_INT_OPLIST(uint16_t)
-#define M_OPL_uint32_t() M_INT_OPLIST(uint32_t)
-#define M_OPL_uint64_t() M_INT_OPLIST(uint64_t)
-#define M_OPL_f32()      M_BASIC_OPLIST
-#define M_OPL_f64()      M_BASIC_OPLIST
-#define M_OPL_f128()     M_BASIC_OPLIST
+#define M_OPL_int8_t()     M_INT_OPLIST(int8_t)
+#define M_OPL_int16_t()    M_INT_OPLIST(int16_t)
+#define M_OPL_int32_t()    M_INT_OPLIST(int32_t)
+#define M_OPL_int64_t()    M_INT_OPLIST(int64_t)
+#define M_OPL_uint8_t()    M_INT_OPLIST(uint8_t)
+#define M_OPL_uint16_t()   M_INT_OPLIST(uint16_t)
+#define M_OPL_uint32_t()   M_INT_OPLIST(uint32_t)
+#define M_OPL_uint64_t()   M_INT_OPLIST(uint64_t)
+#define M_OPL_float32_t()  M_BASIC_OPLIST
+#define M_OPL_float64_t()  M_BASIC_OPLIST
+#define M_OPL_float128_t() M_BASIC_OPLIST
