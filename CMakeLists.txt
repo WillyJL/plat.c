@@ -49,10 +49,8 @@ if(PROJECT_IS_TOP_LEVEL)
 endif()
 
 # cwalk
-target_include_directories(
-    ${PROJECT_NAME} PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/lib/cwalk/include"
-)
+add_subdirectory(lib/cwalk EXCLUDE_FROM_ALL)
+target_link_libraries(${PROJECT_NAME} PUBLIC cwalk)
 
 # M*LIB
 target_compile_options(
