@@ -12,6 +12,8 @@
     } while(0)
 #endif
 
+#define M_RAISE_FATAL(...) plat_crash("M*LIB: " __VA_ARGS__)
+
 // IWYU pragma: begin_exports
 #include <mlib/m-array.h>
 #include <mlib/m-bstring.h>
