@@ -65,8 +65,8 @@ static FILE* plat_path_os_fopen(const char* path, const char* mode) {
         free(wpath);
         return NULL;
     }
-    FILE* file = _wfopen(wpath, wmode);
-    int err = errno;
+    FILE* file = NULL;
+    int err = _wfopen_s(&file, wpath, wmode);
     free(wpath);
     free(wmode);
     errno = err;
