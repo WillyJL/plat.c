@@ -19,8 +19,3 @@ plat_static_assert(
     sizeof(double) * CHAR_BIT == 64,
     "double is not 64 bit on this architecture, fix the float64_t typedef.");
 typedef double float64_t;
-
-plat_static_assert(
-    sizeof(long double) * CHAR_BIT == 128,
-    "long double is not 128 bit on this architecture, fix the float128_t typedef.");
-typedef long double float128_t;
