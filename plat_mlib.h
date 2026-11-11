@@ -70,32 +70,40 @@ static inline size_t m_bstring_search(const m_bstring_t v1, const m_bstring_t v2
 
 // clang-format off
 /* Internal for each */
-#define eachi_oplist(item_t, item, container, oplist)             \
-  M_IF_METHOD(IT_REF, oplist)(eachi, eachi_const)                 \
-  (item_t, item, container, oplist, M_C(item, _it),               \
-   M_C(local_cont_, __LINE__))
+#define eachi_oplist(item_t, item, container, oplist)                       \
+  M_IF_METHOD(IT_REF, oplist)(eachi, eachi_const)                           \
+  (item_t, item, container, oplist, M_C(local_iterator_, __LINE__),         \
+   M_C(item, _it), M_C(local_cont_, __LINE__))
 
 /* Internal for each with M_GET_IT_REF operator */
-#define eachi(item_t,item,container,oplist, iterator, cont)       \
-  (bool cont = true; cont; cont = false)                          \
-  for(item_t item; cont ; cont = false)                           \
-    for(M_GET_IT_TYPE oplist iterator; cont ; cont = false)       \
-      for(M_GET_IT_FIRST oplist (iterator, container) ;           \
-          !M_GET_IT_END_P oplist (iterator)                       \
-            && (item = M_GET_IT_REF oplist (iterator), true) ;    \
-          !M_GET_IT_END_P oplist (iterator)                       \
-            && (M_GET_IT_NEXT oplist (iterator), true))
+#define eachi(item_t,item,container,oplist, it_local, iterator, cont)       \
+  (bool cont = true; cont; cont = false)                                    \
+  for(item_t item; cont ; cont = false)                                     \
+    for(M_GET_IT_TYPE oplist it_local; cont ; cont = false)                 \
+      for(M_GET_IT_TYPE oplist iterator; cont ; cont = false)               \
+          for((M_GET_IT_FIRST oplist (iterator, container),                 \
+                M_GET_IT_SET oplist (it_local, iterator)) ;                 \
+            !M_GET_IT_END_P oplist (iterator)                               \
+              && (item = M_GET_IT_REF oplist (iterator), true) ;            \
+            !M_GET_IT_END_P oplist (iterator)                               \
+              && ((M_GET_IT_EQUAL_P oplist (it_local, iterator))            \
+                    && (M_GET_IT_NEXT oplist (iterator), true), true)       \
+              && (M_GET_IT_SET oplist (it_local, iterator), true))
 
 /* Internal for each with M_GET_IT_CREF operator */
-#define eachi_const(item_t,item,container,oplist, iterator, cont) \
-  (bool cont = true; cont; cont = false)                          \
-  for(item_t item; cont ; cont = false)                           \
-    for(M_GET_IT_TYPE oplist iterator; cont ; cont = false)       \
-      for(M_GET_IT_FIRST oplist (iterator, container) ;           \
-          !M_GET_IT_END_P oplist (iterator)                       \
-            && (item = M_GET_IT_CREF oplist (iterator), true) ;   \
-          !M_GET_IT_END_P oplist (iterator)                       \
-            && (M_GET_IT_NEXT oplist (iterator), true))
+#define eachi_const(item_t,item,container,oplist, it_local, iterator, cont) \
+  (bool cont = true; cont; cont = false)                                    \
+  for(item_t item; cont ; cont = false)                                     \
+    for(M_GET_IT_TYPE oplist it_local; cont ; cont = false)                 \
+      for(M_GET_IT_TYPE oplist iterator; cont ; cont = false)               \
+          for((M_GET_IT_FIRST oplist (iterator, container),                 \
+                M_GET_IT_SET oplist (it_local, iterator)) ;                 \
+            !M_GET_IT_END_P oplist (iterator)                               \
+              && (item = M_GET_IT_CREF oplist (iterator), true) ;           \
+            !M_GET_IT_END_P oplist (iterator)                               \
+              && ((M_GET_IT_EQUAL_P oplist (it_local, iterator))            \
+                    && (M_GET_IT_NEXT oplist (iterator), true), true)       \
+              && (M_GET_IT_SET oplist (it_local, iterator), true))
 // clang-format on
 
 /*
