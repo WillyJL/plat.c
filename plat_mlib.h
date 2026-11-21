@@ -16,8 +16,10 @@
 
 // IWYU pragma: begin_exports
 #include <mlib/m-array.h>
+#include <mlib/m-bitset.h>
 #include <mlib/m-bstring.h>
 #include <mlib/m-buffer.h>
+#include <mlib/m-dict.h>
 #include <mlib/m-list.h>
 #include <mlib/m-string.h>
 #include <mlib/m-tuple.h>
